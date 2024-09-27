@@ -1,0 +1,86 @@
+.header {
+    height: 50px;
+    background-color: #012433;
+}
+
+
+.main {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 24px 214px;
+}
+
+.main h1 {
+    font-size: 24px;
+    color: #386071;
+    font-weight: normal;
+}
+
+.filters {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.filter-year {
+    position: relative;
+    display: inline-block;
+}
+
+
+.btn {
+    font-size: 12px;
+    border: 1px solid #78849E66;
+    border-radius: 20px;
+    text-align: center;
+    padding: 8px 16px;
+    color: #78849E;
+    cursor: pointer;
+
+}
+
+.revenueBtn {
+    background-color: #00BAFF;
+    color: #012433;
+}
+
+.tableDiv {
+    overflow-x: auto;
+}
+
+.movieTable {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    border-spacing: 50px;
+}
+
+.movieTable thead th {
+    font-size: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #0B749B;
+    padding: 5px 0px;
+    border-bottom: 1px solid #0B749B;
+}
+
+
+.movieTable tbody tr td {
+    border-bottom: 1px solid #9AAEBB;
+    padding: 20px 0px;
+    color: #536B7A;
+}
+
+.movieTable tbody tr td img {
+    width: 15px;
+    cursor: pointer;
+}
+
+.center-data {
+    text-align: center;
+}
+
+.title {
+    width: 50%;
+}

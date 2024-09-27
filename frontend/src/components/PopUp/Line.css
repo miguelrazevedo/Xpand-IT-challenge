@@ -1,0 +1,26 @@
+.line {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    align-items: start;
+    justify-content: center;
+}
+
+span {
+    font-size: 14px;
+    color: #78849EB9;
+}
+
+.dark {
+    font-weight: 500;
+    font-style: normal;
+    font-size: 16px;
+    color: #78849E;
+}
+
+.blue {
+    font-weight: 500;
+    font-style: normal;
+    font-size: 16px;
+    color: #00BAFF;
+}
