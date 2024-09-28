@@ -5,21 +5,38 @@ import { Movie } from './types/api';
 import EyeIcon from './assets/eye_icon.svg';
 import InfoPopUp from './components/PopUp/InfoPopUp';
 import YearSelector from './components/YearSelector/YearSelector';
+import RewindIcon from './assets/rewind_icon.svg';
 
 const API_URL = 'http://localhost:5000/api';
 
 function App() {
-    const [year, setYear] = useState<number>(0);
-    const [page, setPage] = useState<number>(1);
-    const [orderByRevenue, setOrderByRevenue] = useState<boolean>(false);
-    const [orderByYear, setOrderByYear] = useState<boolean>(false);
-    const [yearModal, setYearModal] = useState<boolean>(false);
+    /**
+     * States
+     */
+
+    // Movies List
     const [movies, setMovies] = useState<Movie[]>([]);
+    const [movieInfo, setMovieInfo] = useState<Movie>();
+    const [showPopup, setShowPopup] = useState<boolean>(false);
+
+    // Page number
+    const [page, setPage] = useState<number>(1);
+
+    // Revenue filter
+    const [orderByRevenue, setOrderByRevenue] = useState<boolean>(false);
+
+    // Year filter
+    const [year, setYear] = useState<number>(0);
+
+    const [yearModal, setYearModal] = useState<boolean>(false);
+    const [orderByYear, setOrderByYear] = useState<boolean>(false);
 
     const [loading, setLoading] = useState<boolean>(false);
 
-    const [showPopup, setShowPopup] = useState<boolean>(false);
-    const [movieInfo, setMovieInfo] = useState<Movie>();
+    /**
+     * Use Effects
+     */
+
     // Data Fetching Effect
     useEffect(() => {
         const fetchMovies = async () => {
@@ -32,13 +49,15 @@ function App() {
 
             if (response.ok) {
                 const data = await response.json();
+
+                console.log(data);
                 setMovies((prevMovies) => [...prevMovies, ...data]);
             }
 
             setLoading(false);
         };
         fetchMovies();
-    }, [page, orderByRevenue, orderByYear]);
+    }, [page, orderByRevenue, year]);
 
     // Infinite scroll effect
     useEffect(() => {
@@ -55,25 +74,44 @@ function App() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, [loading]);
 
-    // Functions
+    /**
+     * Functions
+     *
+     */
+
+    // Top 10 Revenue
     const handleOrderByRevenue = () => {
         setOrderByRevenue((prev) => !prev);
         setMovies([]);
         setPage(1);
+
+        // Reset the year to 0 when changing the filter
+        // This makes sure that the year filter is not applied when changing
+        // to the revenue filter
+        setYear(0);
+        setOrderByYear(false);
     };
 
-    const toggleYearFilter = () => setYearModal((prev) => !prev);
+    // Year filter
+    const toggleYearModal = () => setYearModal((prev) => !prev);
 
     const handleSelectByYear = (year: number) => {
-        setYearModal(false);
-        setOrderByYear(true);
-        setOrderByRevenue(true);
-
         setYear(year);
+        setOrderByYear(true);
+        setYearModal(false);
         setMovies([]);
         setPage(1);
     };
 
+    const resetSelectByYear = () => {
+        setYear(0);
+        setOrderByYear(false);
+        setYearModal(false);
+        setPage(1);
+        setMovies([]);
+    };
+
+    // Movie Info Pop-up
     const showPopUp = (movie: Movie) => {
         setMovieInfo(movie);
         setShowPopup(true);
@@ -82,6 +120,7 @@ function App() {
     const hidePopUp = () => {
         setShowPopup(false);
     };
+
     return (
         <div>
             {/* Header */}
@@ -95,7 +134,7 @@ function App() {
                 <div className='filters'>
                     <button
                         type='button'
-                        className={`btn ${orderByRevenue ? 'revenueBtn' : ''}`}
+                        className={`btn ${orderByRevenue ? 'activeBtn' : ''}`}
                         onClick={handleOrderByRevenue}
                     >
                         Top 10 Revenue
@@ -103,15 +142,26 @@ function App() {
                     <div className='filter-year'>
                         <button
                             type='button'
-                            className={`btn`}
-                            onClick={toggleYearFilter}
+                            className={`btn ${orderByYear ? 'activeBtn' : ''}`}
+                            onClick={toggleYearModal}
                         >
                             Top 10 Revenue
+                            {year === 0 ? ' per Year' : ` ${year}`}
                         </button>
                         <YearSelector
                             visible={yearModal}
+                            setVisible={toggleYearModal}
                             changeYear={handleSelectByYear}
                         />
+                        {orderByYear && (
+                            <img
+                                src={RewindIcon}
+                                alt='rewind'
+                                onClick={resetSelectByYear}
+                            />
+                        )}
+                        {/* Background div */}
+                        {yearModal && <div className='bg-overlay' />}
                     </div>
                 </div>
 

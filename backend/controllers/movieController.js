@@ -15,7 +15,7 @@ export const getMovies = async (req, res) => {
     const limit = 10;
     const offset = (page - 1) * limit;
 
-    const orderByRevenue = req.query.orderByRevenue === 'true';
+    let orderByRevenue = req.query.orderByRevenue === 'true';
     const year = req.query.year;
 
     let query = 'SELECT * FROM movies';
@@ -24,6 +24,9 @@ export const getMovies = async (req, res) => {
     if (year) {
         query += ' WHERE year = ?';
         queryParams.push(year);
+
+        // If it is ordered by year, it MUST be ordered by revenue as well
+        orderByRevenue = true;
     }
 
     if (orderByRevenue) {

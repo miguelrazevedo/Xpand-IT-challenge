@@ -1,13 +1,26 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './yearSelector.css';
 
 type YearSelector = {
     visible: boolean;
-    changeYear(year: number): () => void;
+    setVisible(): void;
+    changeYear(year: number): void;
 };
 
-export default function YearSelector({ visible, changeYear }: YearSelector) {
+export default function YearSelector({
+    visible,
+    setVisible,
+    changeYear,
+}: YearSelector) {
+    // Refs
+    const selectorRef = useRef<HTMLDivElement>(null);
+
+    // States
     const [years, setYears] = useState<number[]>([]);
+
+    // Effects
+
+    // Get the min and max years, to complete the list
     useEffect(() => {
         const getYears = async () => {
             const response = await fetch(
@@ -26,8 +39,30 @@ export default function YearSelector({ visible, changeYear }: YearSelector) {
         getYears();
     }, []);
 
+    useEffect(() => {
+        if (visible) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [visible]);
+
+    const handleClickOutside = (event: MouseEvent) => {
+        if (
+            selectorRef.current &&
+            !selectorRef.current.contains(event.target as Node)
+        ) {
+            setVisible();
+        }
+    };
+
     return (
-        <div className={`yearSelector ${visible ? 'year-active' : ''}`}>
+        <div
+            className={`yearSelector ${visible ? 'year-active' : ''}`}
+            ref={selectorRef}
+        >
             <div className='year-content'>
                 <div className='year-header'>
                     <span>Select a year</span>
