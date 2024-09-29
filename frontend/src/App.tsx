@@ -4,10 +4,11 @@ import { Movie } from './types/api';
 
 import EyeIcon from './assets/eye_icon.svg';
 import InfoPopUp from './components/PopUp/InfoPopUp';
-import YearSelector from './components/YearSelector/YearSelector';
+import YearSelector from './components/YearModal/YearModal';
 import RewindIcon from './assets/rewind_icon.svg';
 
-const API_URL = 'http://localhost:5000/api';
+const API_URL =
+    (import.meta.env.VITE_API_URL as string) || 'http://localhost:5000/api';
 
 function App() {
     /**
@@ -48,10 +49,12 @@ function App() {
             );
 
             if (response.ok) {
-                const data = await response.json();
+                const data: Movie[] = await response.json();
 
+                if (data.length > 0) {
+                    setMovies((prevMovies) => [...prevMovies, ...data]);
+                }
                 console.log(data);
-                setMovies((prevMovies) => [...prevMovies, ...data]);
             }
 
             setLoading(false);
@@ -101,6 +104,9 @@ function App() {
         setYearModal(false);
         setMovies([]);
         setPage(1);
+
+        // Reset the other filter when changing between them to make sure the other isn't activated at the same time
+        setOrderByRevenue(false);
     };
 
     const resetSelectByYear = () => {

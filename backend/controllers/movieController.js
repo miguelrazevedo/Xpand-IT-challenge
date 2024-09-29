@@ -39,14 +39,16 @@ export const getMovies = async (req, res) => {
     db.query(query, queryParams, (err, result) => {
         if (err) {
             res.status(500).json({ message: 'Internal server error' });
-        } else if (result.length === 0) {
-            res.json({ message: 'No movies found' });
         } else {
             res.json(result);
         }
     });
 };
 
+/**
+ *  GET min and max year (/api/movies)
+ *
+ */
 export const getMinMaxYear = async (req, res) => {
     db.query(
         'SELECT MIN(year) as min, MAX(year) as max FROM movies',

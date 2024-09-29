@@ -1,31 +1,38 @@
 import { useEffect, useRef, useState } from 'react';
-import './yearSelector.css';
+import './YearModal.css';
 
-type YearSelector = {
+const API_URL =
+    (import.meta.env.VITE_API_URL as string) || 'http://localhost:5000/api';
+
+type YearModal = {
     visible: boolean;
     setVisible(): void;
     changeYear(year: number): void;
 };
 
-export default function YearSelector({
+export default function YearModal({
     visible,
     setVisible,
     changeYear,
-}: YearSelector) {
-    // Refs
+}: YearModal) {
+    /**
+     * Refs
+     */
     const selectorRef = useRef<HTMLDivElement>(null);
 
-    // States
+    /**
+     * States
+     */
     const [years, setYears] = useState<number[]>([]);
 
-    // Effects
+    /**
+     * Effects
+     */
 
     // Get the min and max years, to complete the list
     useEffect(() => {
         const getYears = async () => {
-            const response = await fetch(
-                'http://localhost:5000/api/movies/min-max'
-            );
+            const response = await fetch(`${API_URL}/movies/min-max`);
             if (response.ok) {
                 const data = await response.json();
                 const yearsArray: number[] = [];
@@ -39,6 +46,7 @@ export default function YearSelector({
         getYears();
     }, []);
 
+    // Listener to close by clicking outside of the modal
     useEffect(() => {
         if (visible) {
             document.addEventListener('mousedown', handleClickOutside);
@@ -49,6 +57,10 @@ export default function YearSelector({
         };
     }, [visible]);
 
+    /**
+     * Functions
+     *
+     */
     const handleClickOutside = (event: MouseEvent) => {
         if (
             selectorRef.current &&

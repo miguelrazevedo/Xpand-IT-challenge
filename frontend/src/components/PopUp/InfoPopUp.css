@@ -36,7 +36,7 @@
 
     box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.4);
 
-    animation: modalFadeIn 0.3s ease-out;
+    animation: modalFadeIn 0.5s ease-out;
 }
 
 .popup-header {
