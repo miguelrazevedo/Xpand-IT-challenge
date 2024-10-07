@@ -14,7 +14,8 @@ This repository contains two main folders: `backend` and `frontend`. Follow the 
     DB_PASSWORD=<your-database-password>
     DB_DATABASE=<your-database-name>
     DB_PORT=<your-database-port>
-    PORT=<your-server-port>
+    NODE_ENV='production | development'
+    REDIS_URL=redis://localhost:6379
     ```
 
 2. **Ensure your MySQL database is populated** with data. You can import the `movies.sql` file to insert fake data created with [Mockaroo](https://mockaroo.com/).
