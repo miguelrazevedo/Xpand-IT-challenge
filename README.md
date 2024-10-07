@@ -4,7 +4,12 @@
 
 This repository contains two main folders: `backend` and `frontend`. Follow the instructions below to set up each part of the project.
 
-### Backend Setup (Node.js)
+## Requirements
+- Node.js 20.18 (or later)
+- MySQL 8 (or later)
+- Redis
+
+## Backend Setup (Node.js)
 
 1. **Create a `.env` file** in the `backend` folder with the following variables:
 
@@ -14,7 +19,7 @@ This repository contains two main folders: `backend` and `frontend`. Follow the 
     DB_PASSWORD=<your-database-password>
     DB_DATABASE=<your-database-name>
     DB_PORT=<your-database-port>
-    NODE_ENV='production | development'
+    NODE_ENV=<production | development>
     REDIS_URL=redis://localhost:6379
     ```
 
@@ -32,7 +37,7 @@ This repository contains two main folders: `backend` and `frontend`. Follow the 
     npm run dev
     ```
 
-### Frontend Setup (React)
+## Frontend Setup (React)
 
 1. **Create a `.env` file** in the `frontend` folder with the following variable:
 
