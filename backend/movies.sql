@@ -1,3 +1,5 @@
+CREATE SCHEMA IF NOT EXISTS challenge;
+
 create table movies (
 	id INT,
 	title VARCHAR(100),
